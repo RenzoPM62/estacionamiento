@@ -28,7 +28,7 @@ $sentencia->bindParam(':estado',$estado_del_registro);
 if($sentencia->execute()) {
     echo 'success';
     ?>
-        <script>location.href = "principal.php";</script>
+        <script>location.href = "tickets/generar_ticket.php";</script>
     <?php
 }else{
     echo 'Error al registrar a la base de datos';

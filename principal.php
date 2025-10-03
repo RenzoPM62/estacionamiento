@@ -160,9 +160,14 @@ include('layout/admin/datos_usuario_sesion.php');
                                                         alert('Debe de llenar el campo NIT/CI')
                                                         $('#nit_ci<?php echo $id_map; ?>').focus();
                                                       }else{
+
+                                                      var url_1 = 'parqueo/controller_cambiar_estado_ocupado.php';
+                                                        $.get(url_1,{cuviculo:cuviculo},function (datos) {
+                                                            $('#respuesta_ticket').html(datos);
+                                                        });
                                                         
-                                                      var url = 'tickets/controller_registrar_ticket.php';
-                                                        $.get(url,{placa:placa,nombre_cliente:nombre_cliente,nit_ci:nit_ci,fecha_ingreso:fecha_ingreso,hora_ingreso:hora_ingreso,cuviculo:cuviculo,user_session:user_session},function (datos) {
+                                                      var url_2 = 'tickets/controller_registrar_ticket.php';
+                                                        $.get(url_2,{placa:placa,nombre_cliente:nombre_cliente,nit_ci:nit_ci,fecha_ingreso:fecha_ingreso,hora_ingreso:hora_ingreso,cuviculo:cuviculo,user_session:user_session},function (datos) {
                                                             $('#respuesta_ticket').html(datos);
                                                         });
                                                       }
