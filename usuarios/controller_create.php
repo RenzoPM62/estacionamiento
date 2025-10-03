@@ -6,7 +6,7 @@ $nombres = $_GET['nombres'];
 $email = $_GET['email'];
 $password_user = $_GET['password_user'];
 
-date_default_timezone_set("America/Lima");
+date_default_timezone_set("America/caracas");
 $fechaHora = date("Y-m-d h:i:s");
 
 $sentencia = $pdo->prepare("INSERT INTO tb_usuarios 
