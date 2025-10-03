@@ -19,7 +19,7 @@ include('layout/admin/datos_usuario_sesion.php');
         <br>
         <div class="container">
 
-            <h2>Bienvenido al SISTEMA DE PARQUEO MERCADO HUASCAR</h2>
+            <h2>Bienvenido al SISTEMA DE PARQUEO - MERCADO HUASCAR</h2>
 
             <br>
             <div class="row">
@@ -111,7 +111,7 @@ include('layout/admin/datos_usuario_sesion.php');
                                                       $mes = date(format:"m");
                                                       $ano = date(format:"Y");
                                                       ?>
-                                                        <input type="date" class="form-control" value="<?php echo $ano."-".$mes."-".$dia; ?>">
+                                                        <input type="date" class="form-control" id="fecha_ingreso<?php echo $id_map; ?>" value="<?php echo $ano."-".$mes."-".$dia; ?>">
                                                     </div>
                                                   </div>
 
@@ -124,14 +124,32 @@ include('layout/admin/datos_usuario_sesion.php');
                                                       $hora = date(format:"H");
                                                       $minutos = date(format:"i");
                                                       ?>
-                                                        <input type="time" class="form-control" value="<?php echo $hora.":".$minutos; ?>">
+                                                        <input type="time" class="form-control" id= "hora_ingreso<?php echo $id_map; ?>" value="<?php echo $hora.":".$minutos; ?>">
+                                                    </div>
+                                                  </div>
+
+                                                  <div class="form-group row">
+                                                    <label for="staticEmail" class="col-sm-4 col-form-label">Cuviculo:</label>
+                                                    <div class="col-sm-8">
+                                                        <input type="text" class="form-control" id="cuviculo<?php echo $id_map; ?>" value="<?php echo $nro_espacio; ?>">
                                                     </div>
                                                   </div>
 
                                               </div>
                                               <div class="modal-footer">
                                                   <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                                                  <button type="button" class="btn btn-primary">Imprmir ticket</button>
+                                                  <button type="button" class="btn btn-primary" id="btn_registrar_ticket<?php echo $id_map; ?>">Imprmir ticket</button>
+                                                  <script>
+                                                    $('#btn_registrar_ticket<?php echo $id_map; ?>').click(function(){
+                                                      var placa = $('#placa_buscar<?php echo $id_map;?>').val();
+                                                      var nombre_cliente = $('#nombre_cliente<?php echo $id_map; ?>').val();
+                                                      var nit_ci = $('#nit_ci<?php echo $id_map; ?>').val();
+                                                      var fecha_ingreso = $('#fecha_ingreso<?php echo $id_map; ?>').val();
+                                                      var hora_ingreso = $('#hora_ingreso<?php echo $id_map; ?>').val();
+                                                      var cuviculo = $('#cuviculo<?php echo $id_map; ?>').val();                                                 
+
+                                                    });
+                                                  </script>
                                               </div>
                                               </div>
                                           </div>
