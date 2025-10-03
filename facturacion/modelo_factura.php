@@ -23,9 +23,9 @@ $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, array(79,150), true, 'UTF-8', f
 
 // set document information
 $pdf->setCreator(PDF_CREATOR);
-$pdf->setAuthor('Nicola Asuni');
-$pdf->setTitle('TCPDF Example 002');
-$pdf->setSubject('TCPDF Tutorial');
+$pdf->setAuthor('Sistema de parqueo');
+$pdf->setTitle('Sistema de parqueo');
+$pdf->setSubject('Sistema de parqueo');
 $pdf->setKeywords('TCPDF, PDF, example, test, guide');
 
 // remove default header/footer
@@ -67,12 +67,35 @@ $html = '
     RUC: 20433452659 <br>
     AV. LA UNIÓN, 1199, VILLA MARIA DEL TRIUNFO, LIMA <br>
     LIMA - PERU <br>
+    <br>
+    <b>BOLETA DE VENTA ELECTRONICA</b><br>
+    Nro.000001
     ----------------------------------------------------------------------------------
     <div style="text-align: left">
         <b>DATOS DEL CLIENTE</b> <br>
         <b>SEÑOR(A): </b> '.$nombre_cliente.' <br>
         <b>NIT/CI.: </b> '.$nit_ci.' <br>
+        <b>Fecha facturada: </b> '.$fecha_ingreso.' <br>
     ----------------------------------------------------------------------------------<br>
+        <b>De: </b>3/10/2025 <b> Hora: </b>12:00<br>
+        <b>Hasta: </b>3/10/2025 <b> Hora: </b>4:00<br>
+        <b>Tiempo: </b>2 horas <br>
+    ----------------------------------------------------------------------------------<br>
+        <table>
+        <tr>
+            <td style="text-align: center"><b>Detalle</b></td>
+            <td style="text-align: center"><b>Precio</b></td>
+            <td style="text-align: center"><b>Cantidad</b></td>
+            <td style="text-align: center"><b>Total</b></td>
+        </tr>
+        <tr>
+            <td style="text-align: center">Servicio de parqueo</td>
+            <td style="text-align: center">S/.7.00</td>
+            <td style="text-align: center">2</td>
+            <td style="text-align: center">S/.14.00</td>
+        </tr>
+        </table>
+        <p style="text-align: right"><b>Monto total: </b></p>
         <b>Cuviculo de parqueo: </b> '.$cuviculo.' <br>
         <b>Fecha de ingreso: </b> '.$fecha_ingreso.' <br>
         <b>Hora de ingreso: </b> '.$hora_ingreso.' <br>
