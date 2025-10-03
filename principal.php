@@ -248,58 +248,54 @@ include('layout/admin/datos_usuario_sesion.php');
                                   <div class="form-group row">
                                     <label for="staticEmail" class="col-sm-4 col-form-label">Placa: </label>
                                     <div class="col-sm-8">
-                                      <input type="text" style="text-transform: uppercase" class="form-control" value="<?php echo $placa_auto;?>" id="placa_buscar<?php echo $id_map; ?>" disabled>
+                                      <input type="text" style="text-transform: uppercase" class="form-control" value="<?php echo $placa_auto; ?>" id="placa_buscar<?php echo $id_map; ?>" disabled>
                                     </div>
                                   </div>
 
                                   <div class="form-group row">
                                     <label for="staticEmail" class="col-sm-4 col-form-label">Nombre: </label>
                                     <div class="col-sm-8">
-                                      <input type="text" class="form-control" value="<?php echo $nombre_cliente;?>" id="nombre_cliente<?php echo $id_map; ?>" disabled>
+                                      <input type="text" class="form-control" value="<?php echo $nombre_cliente; ?>" id="nombre_cliente<?php echo $id_map; ?>" disabled>
                                     </div>
                                   </div>
 
                                   <div class="form-group row">
                                     <label for="staticEmail" class="col-sm-4 col-form-label">NIT/CI: </label>
                                     <div class="col-sm-8">
-                                      <input type="text" class="form-control" value="<?php echo $nit_ci;?>" id="nit_ci<?php echo $id_map; ?>" disabled>
+                                      <input type="text" class="form-control" value="<?php echo $nit_ci; ?>" id="nit_ci<?php echo $id_map; ?>" disabled>
                                     </div>
                                   </div>
 
                                   <div class="form-group row">
                                     <label for="staticEmail" class="col-sm-4 col-form-label">Fecha de ingreso:</label>
                                     <div class="col-sm-8">
-                                      <input type="text" class="form-control" value="<?php echo $fecha_ingreso;?>" id="fecha_ingreso<?php echo $id_map; ?>" disabled>
+                                      <input type="text" class="form-control" value="<?php echo $fecha_ingreso; ?>" id="fecha_ingreso<?php echo $id_map; ?>" disabled>
                                     </div>
                                   </div>
 
                                   <div class="form-group row">
                                     <label for="staticEmail" class="col-sm-4 col-form-label">Hora de ingreso:</label>
                                     <div class="col-sm-8">
-                                      <input type="text" class="form-control" value="<?php echo $hora_ingreso;?>" id="hora_ingreso<?php echo $id_map; ?>" disabled>
+                                      <input type="text" class="form-control" value="<?php echo $hora_ingreso; ?>" id="hora_ingreso<?php echo $id_map; ?>" disabled>
                                     </div>
                                   </div>
 
                                   <div class="form-group row">
                                     <label for="staticEmail" class="col-sm-4 col-form-label">Cuviculo:</label disabled>
                                     <div class="col-sm-8">
-                                      <input type="text" class="form-control" value="<?php echo $cuviculo;?>" id="cuviculo<?php echo $id_map; ?>">
+                                      <input type="text" class="form-control" value="<?php echo $cuviculo; ?>" id="cuviculo<?php echo $id_map; ?>">
                                     </div>
                                   </div>
                                 </div>
                                 <div class="modal-footer">
-                                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                                  <button type="button" class="btn btn-primary">Volver a imprimir</button>
-                                  <button type="button" class="btn btn-danger">Facturar</button>
+                                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Salir</button>
+                                  <a href="tickets/controller_cancelar_ticket.php?id=<?php echo $id_ticket; ?>&&cuviculo=<?php echo $cuviculo; ?>" class="btn btn-danger">Cancelar ticket</a>
+                                  <a href="tickets/reimprimir_ticket.php?id=<?php echo $id_ticket; ?>" class="btn btn-primary">Volver a imprimir</a>
+                                  <button type="button" class="btn btn-success">Facturar</button>
                                 </div>
                               </div>
                             </div>
                           </div>
-                          <script>
-                            $('#btn_ocupado<?php echo $id_map; ?>').click(function() {
-
-                            });
-                          </script>
                           <p><?php echo $estado_espacio; ?></p>
                         </center>
                       </div>
