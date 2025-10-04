@@ -80,6 +80,7 @@ $html = '
         <b>De: </b>3/10/2025 <b> Hora: </b>12:00<br>
         <b>Hasta: </b>3/10/2025 <b> Hora: </b>4:00<br>
         <b>Tiempo: </b>2 horas <br>
+        <b>Cuviculo de parqueo: </b> '.$cuviculo.' <br>
     ----------------------------------------------------------------------------------<br>
         <table>
         <tr>
@@ -95,12 +96,23 @@ $html = '
             <td style="text-align: center">S/.14.00</td>
         </tr>
         </table>
-        <p style="text-align: right"><b>Monto total: </b></p>
-        <b>Cuviculo de parqueo: </b> '.$cuviculo.' <br>
-        <b>Fecha de ingreso: </b> '.$fecha_ingreso.' <br>
-        <b>Hora de ingreso: </b> '.$hora_ingreso.' <br>
+        <p style="text-align: right">
+        <b>Monto total: </b>S/.14.00 
+        </p>
+        <p>
+        <b>Son: </b>CATORCE CON 00/100 SOLES 
+        </p>
+
+        <br><br>
+        
         ----------------------------------------------------------------------------------<br>
         <b>USUARIO: </b> '.$user_sesion.' <br>
+
+        <br><br><br><br><br>
+        <p style="text-align: center">
+        Representación impresa de la Boleta de venta Electrónica.<br>
+        <b>Gracias por su preferencia. ¡Vuelva pronto!</b>
+        </p>
     </div>
 </p>
 </div>
