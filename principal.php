@@ -21,7 +21,7 @@ include('layout/admin/datos_usuario_sesion.php');
       <br>
       <div class="container">
 
-        <h2>Bienvenido al SISTEMA DE PARQUEO - MERCADO HUASCAR</h2>
+        <h2>Bienvenido al SISTEMA DE PARQUEO - MERCADO HUASCAR - COMMIT ARTURO</h2>
 
         <br>
         <div class="row">
