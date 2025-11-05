@@ -12,7 +12,7 @@ $hora_ingreso = $_GET['hora_ingreso'];
 $user_sesion = $_GET['user_session'];
 $estado_ticket = "OCUPADO";
 
-date_default_timezone_set("America/caracas");
+date_default_timezone_set("America/Lima");
 $fechaHora = date("Y-m-d h:i:s");
 
 $sentencia = $pdo->prepare('INSERT INTO tb_tickets

@@ -7,7 +7,7 @@ $cuviculo = $_GET['cuviculo'];
 
 $estado_inactivo = "0";
 
-date_default_timezone_set("America/caracas");
+date_default_timezone_set("America/Lima");
 $fechaHora = date("Y-m-d h:i:s");
 
 $sentencia = $pdo->prepare("UPDATE tb_tickets SET

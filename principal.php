@@ -3,6 +3,16 @@
 include('app/config.php');
 include('layout/admin/datos_usuario_sesion.php');
 
+//recuperar el nro de la factura
+$contador_del_nro_de_factura = 0;
+$query_facturaciones = $pdo->prepare("SELECT * FROM tb_facturaciones WHERE estado = '-'");
+$query_facturaciones->execute();
+$facturaciones = $query_facturaciones->fetchAll(PDO::FETCH_ASSOC);
+foreach ($facturaciones as $facturacion) {
+    $contador_del_nro_de_factura = $contador_del_nro_de_factura + 1;
+}
+$contador_del_nro_de_factura = $contador_del_nro_de_factura + 1;
+
 
 ?>
 <!DOCTYPE html>
@@ -21,7 +31,7 @@ include('layout/admin/datos_usuario_sesion.php');
       <br>
       <div class="container">
 
-        <h2>Bienvenido al SISTEMA DE PARQUEO - MERCADO HUASCAR - COMMIT ARTURO</h2>
+        <h2>Bienvenido al SISTEMA DE PARQUEO - MERCADO HUASCAR</h2>
 
         <br>
         <div class="row">
@@ -111,7 +121,7 @@ include('layout/admin/datos_usuario_sesion.php');
                                     <label for="staticEmail" class="col-sm-4 col-form-label">Fecha de ingreso:</label>
                                     <div class="col-sm-8">
                                       <?php
-                                      date_default_timezone_set("America/caracas");
+                                      date_default_timezone_set("America/Lima");
                                       $fechaHora = date("Y-m-d h:i:s");
                                       $dia = date(format: "d");
                                       $mes = date(format: "m");
@@ -125,7 +135,7 @@ include('layout/admin/datos_usuario_sesion.php');
                                     <label for="staticEmail" class="col-sm-4 col-form-label">Hora de ingreso:</label>
                                     <div class="col-sm-8">
                                       <?php
-                                      date_default_timezone_set("America/caracas");
+                                      date_default_timezone_set("America/Lima");
                                       $fechaHora = date("Y-m-d h:i:s");
                                       $hora = date(format: "H");
                                       $minutos = date(format: "i");
@@ -291,7 +301,35 @@ include('layout/admin/datos_usuario_sesion.php');
                                   <button type="button" class="btn btn-secondary" data-dismiss="modal">Salir</button>
                                   <a href="tickets/controller_cancelar_ticket.php?id=<?php echo $id_ticket; ?>&&cuviculo=<?php echo $cuviculo; ?>" class="btn btn-danger">Cancelar ticket</a>
                                   <a href="tickets/reimprimir_ticket.php?id=<?php echo $id_ticket; ?>" class="btn btn-primary">Volver a imprimir</a>
-                                  <button type="button" class="btn btn-success">Facturar</button>
+                                  <button type="button" class="btn btn-success" id="btn_facturar<?php echo $id_map;?>">Facturar</button>
+                                  <?php
+                                  //recuperar id cliente
+                                  $query_datos_cliente_factura = $pdo->prepare("SELECT * FROM tb_clientes WHERE placa_auto = '$placa_auto' AND estado = '1' ");
+                                  $query_datos_cliente_factura->execute();
+                                  $datos_cliente_facturas = $query_datos_cliente_factura->fetchAll(PDO::FETCH_ASSOC);
+                                  foreach ($datos_cliente_facturas as $datos_cliente_factura) {
+                                    $id_cliente_facturacion = $datos_cliente_factura['id_cliente'];
+                                  }
+                                  ?>
+                                  <script>
+                                    $('#btn_facturar<?php echo $id_map;?>').click(function() {
+                                      var nro_factura = "<?php echo $contador_del_nro_de_factura; ?>";
+                                      var id_cliente = "<?php echo $id_cliente_facturacion; ?>";
+                                      var fecha_ingreso = "<?php echo $fecha_ingreso; ?>";
+                                      var hora_ingreso = "<?php echo $hora_ingreso; ?>";
+                                      var cuviculo = "<?php echo $cuviculo; ?>";
+                                      var user_sesion = "<?php echo $user_sesion; ?>";
+
+                                      var url_4 = 'facturacion/controller_registrar_factura.php';
+                                        $.get(url_4, {nro_factura:nro_factura,id_cliente:id_cliente,fecha_ingreso:fecha_ingreso,hora_ingreso:hora_ingreso,cuviculo:cuviculo,user_sesion:user_sesion}, function(datos) {
+                                          $('#respuesta_factura<?php echo $id_map;?>').html(datos);
+                                        });
+
+                                    });
+                                  </script>
+                                </div>
+                                <div id="respuesta_factura<?php echo $id_map;?>">
+
                                 </div>
                               </div>
                             </div>

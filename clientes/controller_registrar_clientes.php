@@ -6,7 +6,7 @@ $nombre_cliente = $_GET['nombre_cliente'];
 $nit_ci_cliente = $_GET['nit_ci'];
 $placa_auto = $_GET['placa'];
 
-date_default_timezone_set("America/caracas");
+date_default_timezone_set("America/Lima");
 $fechaHora = date("Y-m-d h:i:s");
 
 

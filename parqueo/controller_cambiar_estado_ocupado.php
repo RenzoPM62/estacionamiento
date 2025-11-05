@@ -6,7 +6,7 @@ $cuviculo = $_GET['cuviculo'];
 $estado_espacio = "OCUPADO";
 
 
-date_default_timezone_set("America/caracas");
+date_default_timezone_set("America/Lima");
 $fechaHora = date("Y-m-d h:i:s");
 //echo $nombres."-".$email."-".$password_user;
 

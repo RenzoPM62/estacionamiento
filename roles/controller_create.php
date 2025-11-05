@@ -5,7 +5,7 @@ include('../app/config.php');
 $nombre = $_GET['nombre'];
 
 
-date_default_timezone_set("America/caracas");
+date_default_timezone_set("America/Lima");
 $fechaHora = date("Y-m-d h:i:s");
 
 $sentencia = $pdo->prepare("INSERT INTO tb_roles 

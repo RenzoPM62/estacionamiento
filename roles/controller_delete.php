@@ -1,17 +1,11 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: HILARIWEB
- * Date: 7/9/2022
- * Time: 17:36
- */
 
 include('../app/config.php');
 
 $id_rol = $_GET['id_rol'];
 $estado_inactivo = "0";
 
-date_default_timezone_set("America/caracas");
+date_default_timezone_set("America/Lima");
 $fechaHora = date("Y-m-d h:i:s");
 
 $sentencia = $pdo->prepare("UPDATE tb_roles SET

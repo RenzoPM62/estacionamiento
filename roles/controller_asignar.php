@@ -7,7 +7,7 @@ $id_user = $_POST['id_user'];
 $rol = $_POST['rol'];
 
 
-date_default_timezone_set("America/caracas");
+date_default_timezone_set("America/Lima");
 $fechaHora = date("Y-m-d h:i:s");
 
 $sentencia = $pdo->prepare("UPDATE tb_usuarios SET
