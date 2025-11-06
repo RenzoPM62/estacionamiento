@@ -19,7 +19,7 @@ foreach ($tickets as $ticket) {
 
 
 // create new PDF document
-$pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, array(79,150), true, 'UTF-8', false);
+$pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, array(79,165), true, 'UTF-8', false);
 
 // set document information
 $pdf->setCreator(PDF_CREATOR);
@@ -74,7 +74,7 @@ $html = '
     <div style="text-align: left">
         <b>DATOS DEL CLIENTE</b> <br>
         <b>SEÑOR(A): </b> '.$nombre_cliente.' <br>
-        <b>NIT/CI.: </b> '.$nit_ci.' <br>
+        <b>DNI/RUC: </b> '.$nit_ci.' <br>
         <b>Fecha facturada: </b> '.$fecha_ingreso.' <br>
     ----------------------------------------------------------------------------------<br>
         <b>De: </b>3/10/2025 <b> Hora: </b>12:00<br>
@@ -108,7 +108,7 @@ $html = '
         ----------------------------------------------------------------------------------<br>
         <b>USUARIO: </b> '.$user_sesion.' <br>
 
-        <br><br><br><br><br>
+        <br><br><br><br><br><br><br><br><br><br>
         <p style="text-align: center">
         Representación impresa de la Boleta de venta Electrónica.<br>
         <b>Gracias por su preferencia. ¡Vuelva pronto!</b>
@@ -120,6 +120,22 @@ $html = '
 
 // output the HTML content
 $pdf->writeHTML($html, true, false, true, false, '');
+
+
+$style = array(
+    'border' => 0,
+    'vpadding' => '3',
+    'hpadding' => '3',
+    'fgcolor' => array(0, 0, 0),
+    'bgcolor' => false, //array(255,255,255)
+    'module_width' => 1, // width of a single module in points
+    'module_height' => 1 // height of a single module in points
+);
+
+$QR = 'Factura realizada por el Sistema de Parqueo MERCADO HUASCAR, al cliente Freddy Hilari con nit: 837737277323 
+con el vehiculo con numero de placa 3983FREDD y esta factura se genero en 21 de octubre de 2022 a hr: 18:00';
+$pdf->write2DBarcode($QR,'QRCODE,L',  26,110,25,25, $style);
+
 
 //Close and output PDF document
 $pdf->Output('example_002.pdf', 'I');
