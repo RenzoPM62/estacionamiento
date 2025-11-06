@@ -39,12 +39,13 @@ $hora_calculado = ((int)$diferencia_hora);
 $diferencia_minutos = ($c_hora_salida - $c_hora_ingreso)/60;
 $calculando = $hora_calculado * 60;
 $minutos_calculado = $diferencia_minutos - $calculando;
-$tiempo = $hora_calculado." horas con".$minutos_calculado." minutos";
+$tiempo = $hora_calculado." horas con ".$minutos_calculado." minutos";
 
-echo $tiempo;
-/*
+
 $cuviculo = $_GET['cuviculo'];
-$detalle = $_GET['detalle'];
+$detalle = "Servicio de parqueo de ".$tiempo;
+
+/*
 $precio = $_GET['precio'];
 $cantidad = $_GET['cantidad'];
 $total = $_GET['total'];
