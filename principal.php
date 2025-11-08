@@ -300,7 +300,7 @@ $contador_del_nro_de_factura = $contador_del_nro_de_factura + 1;
                                 <div class="modal-footer">
                                   <button type="button" class="btn btn-secondary" data-dismiss="modal">Salir</button>
                                   <a href="tickets/controller_cancelar_ticket.php?id=<?php echo $id_ticket; ?>&&cuviculo=<?php echo $cuviculo; ?>" class="btn btn-danger">Cancelar ticket</a>
-                                  <a href="tickets/reimprimir_ticket.php?id=<?php echo $id_ticket; ?>" class="btn btn-primary">Volver a imprimir</a>
+                                  <a href="tickets/reimprimir_ticket.php?id=<?php echo $id_ticket; ?>" class="btn btn-primary" target="_blank">Volver a imprimir</a>
                                   <button type="button" class="btn btn-success" id="btn_facturar<?php echo $id_map;?>">Facturar</button>
                                   <?php
                                   //recuperar id cliente
