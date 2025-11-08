@@ -154,7 +154,7 @@ $contador_del_nro_de_factura = $contador_del_nro_de_factura + 1;
                                 </div>
                                 <div class="modal-footer">
                                   <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                                  <button type="button" class="btn btn-primary" id="btn_registrar_ticket<?php echo $id_map; ?>">Imprimir ticket</button>
+                                  <button type="button" class="btn btn-primary" id="btn_registrar_ticket<?php echo $id_map; ?>" target="_blank">Imprimir ticket</button>
                                   <script>
                                     $('#btn_registrar_ticket<?php echo $id_map; ?>').click(function() {
                                       var placa = $('#placa_buscar<?php echo $id_map; ?>').val();
