@@ -31,9 +31,9 @@ if ($nombre_cliente == "") {
             <input type="text" class="form-control" id="nombre_cliente<?php echo $id_map; ?>">
         </div>
     </div>
-
+    
     <div class="form-group row">
-        <label for="staticEmail" class="col-sm-3 col-form-label">NIT/CI: <span><b style="color: red">*</b></span></label>
+        <label for="staticEmail" class="col-sm-3 col-form-label">DNI/RUC: <span><b style="color: red">*</b></span></label>
         <div class="col-sm-9">
             <input type="text" class="form-control" id="nit_ci<?php echo $id_map; ?>">
         </div>
@@ -50,7 +50,7 @@ if ($nombre_cliente == "") {
     </div>
 
     <div class="form-group row">
-        <label for="staticEmail" class="col-sm-3 col-form-label">NIT/CI: <span><b style="color: red">*</b></span></label>
+        <label for="staticEmail" class="col-sm-3 col-form-label">DNI/RUC: <span><b style="color: red">*</b></span></label>
         <div class="col-sm-9">
             <input type="text" class="form-control" id="nit_ci<?php echo $id_map; ?>" value="<?php echo $nit_ci_cliente; ?>">
         </div>
