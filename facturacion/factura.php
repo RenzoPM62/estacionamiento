@@ -2,6 +2,7 @@
 // Include the main TCPDF library (search for installation path).
 require_once('../app/templeates/TCPDF-main/tcpdf.php');
 include('../app/config.php');
+$id_factura_get = $_GET['id_factura'];
 
 
 //cargar el encabezado
@@ -22,7 +23,7 @@ foreach($informacions as $informacion){
 
 
 /////////// rescatar la informacion de la factura
-$query_fascturas = $pdo->prepare("SELECT * FROM tb_facturaciones WHERE estado = '1' ");
+$query_fascturas = $pdo->prepare("SELECT * FROM tb_facturaciones WHERE id_facturacion = '$id_factura_get' AND estado = '1' ");
 $query_fascturas->execute();
 $facturas = $query_fascturas->fetchAll(PDO::FETCH_ASSOC);
 foreach($facturas as $factura){

@@ -23,16 +23,16 @@ $ano = date('Y');
 
 
 
-$id_informacion = $_GET['id_informacion'];
 $nro_factura = $_GET['nro_factura'];
 $id_cliente = $_GET['id_cliente'];
 
 ///////////// recuperar el departamento o ciudad de la tabla informaciones
-$query_info = $pdo->prepare("SELECT * FROM tb_informaciones WHERE id_informacion = '$id_informacion' AND estado = '1' ");
+$query_info = $pdo->prepare("SELECT * FROM tb_informaciones WHERE estado = '1' "); // Busca la info activa
 $query_info->execute();
 $infos = $query_info->fetchAll(PDO::FETCH_ASSOC);
 foreach($infos as $info){
-    $departamento_ciudad = $info['departamento_ciudad'];
+    $id_informacion = $info['id_informacion']; // Obtenemos el ID desde la BD
+    $departamento_ciudad = $info['departamento_ciudad']; // Obtenemos la ciudad
 }
 $fecha_factura = $departamento_ciudad.", ".$dia." de ".$mes." de ".$ano;
 
@@ -59,6 +59,7 @@ $detalle = "Servicio de parqueo de ".$tiempo;
 
 
 ///////// calcula el precio del cliente en horas /////////////////
+$precio_hora = 0;
 $query_precios = $pdo->prepare("SELECT * FROM tb_precios WHERE cantidad = '$diff->h' AND detalle = 'HORAS' AND estado = '1'  ");
 $query_precios->execute();
 $datos_precios = $query_precios->fetchAll(PDO::FETCH_ASSOC);
@@ -136,9 +137,10 @@ $sentencia->bindParam('estado',$estado_del_registro);
 
 if($sentencia->execute()){
     echo 'success';
+    $id_facturacion = $pdo->lastInsertId();
 
     $estado_espacio = "LIBRE";
-    date_default_timezone_set("America/caracas");
+    date_default_timezone_set("America/Lima");
     $fechaHora = date("Y-m-d h:i:s");
     $sentencia = $pdo->prepare("UPDATE tb_mapeos SET
     estado_espacio = :estado_espacio,
@@ -148,7 +150,6 @@ if($sentencia->execute()){
     $sentencia->bindParam(':fyh_actualizacion',$fechaHora);
     $sentencia->bindParam(':nro_espacio',$cuviculo);
     $sentencia->execute();
-
 
     $estado_espacio_ticket = "LIBRE";
     $sentencia_ticket = $pdo->prepare("UPDATE tb_tickets SET
@@ -160,7 +161,7 @@ if($sentencia->execute()){
 
 
     ?>
-    <script>location.href = "facturacion/factura.php";</script>
+    <script>location.href = "facturacion/factura.php?id_factura=<?php echo $id_facturacion; ?>";</script>
     <?php
 }else{
     echo 'error al registrar a la base de datos';
