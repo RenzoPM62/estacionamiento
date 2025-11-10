@@ -118,7 +118,7 @@ $sentencia->bindParam(':id_informacion',$id_informacion);
 $sentencia->bindParam(':nro_factura',$nro_factura);
 $sentencia->bindParam(':id_cliente',$id_cliente);
 $sentencia->bindParam(':fecha_factura',$fecha_factura);
-$sentencia->bindParam(':fecha_ingreso',$fecha_ingreso);
+$sentencia->bindParam(':fecha_ingreso',$fecha_ingreso); 
 $sentencia->bindParam(':hora_ingreso',$hora_ingreso);
 $sentencia->bindParam(':fecha_salida',$fecha_salida);
 $sentencia->bindParam(':hora_salida',$hora_salida);

@@ -16,91 +16,118 @@
     background-size: 100vw 100vh">
 
 
+<nav class="navbar navbar-expand-lg" style="background-color: #FFE066;">
+    <a class="navbar-brand" href="#">
+        <img src="<?php echo $URL; ?>/public/imagenes/mercado_huascar.png" width="30" height="40" alt="" loading="lazy">
+        ESTACIONAMIENTO HUASCAR
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
 
-    <nav class="navbar navbar-expand-lg" style="background-color: #FFE066;">
-        <a class="navbar-brand" href="#">
-            <img src="<?php echo $URL; ?>/public/imagenes/mercado_huascar.png" width="30" height="40" alt="" loading="lazy">
-            ESTACIONAMIENTO HUASCAR
-        </a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-link" href="#" id="btn-inicio">INICIO <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#" id="btn-sobre-nosotros">SOBRE NOSOTROS</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#" id="btn-otros-servicios">OTROS SERVICIOS</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#" id="btn-contactanos">CONTACTANOS</a>
+            </li>
+        </ul>
+        <form class="form-inline my-2 my-lg-0">
+            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+        </form>
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+            Ingresar
         </button>
-
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item active">
-                    <a class="nav-link" href="#">INICIO <span class="sr-only">(current)</span></a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">SOBRE NOSOTROS</a>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        PROMOCIONES
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="#">MENSUALES</a>
-                        <a class="dropdown-item" href="#">DÍAS</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#">FICHAS</a>
-                    </div>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">CONTACTANOS</a>
-                </li>
-            </ul>
-            <form class="form-inline my-2 my-lg-0">
-                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-            </form>
-            <!-- Button trigger modal -->
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-                Ingresar
-            </button>
-        </div>
-    </nav>
-
+    </div>
+</nav>
+    
     <br>
 
     <div class="container">
-        <div class="row">
-            <?php
-            $query_mapeos = $pdo->prepare("SELECT * FROM tb_mapeos WHERE estado = '1' ");
-            $query_mapeos->execute();
-            $mapeos = $query_mapeos->fetchAll(PDO::FETCH_ASSOC);
-            foreach ($mapeos as $mapeo) {
-                $id_map = $mapeo['id_map'];
-                $nro_espacio = $mapeo['nro_espacio'];
-                $estado_espacio = $mapeo['estado_espacio'];
-                if ($estado_espacio == 'LIBRE') { ?>
-                    <div class="col">
-                        <center>
-                            <h2><?php echo $nro_espacio; ?></h2>
-                            <button class="btn btn-success" style="width: 100%; height: 114px">
-                                <p><?php echo $estado_espacio; ?></p>
-                            </button>
-                        </center>
-                    </div>
-                <?php
-                }
-                if ($estado_espacio == 'OCUPADO') { ?>
-                    <div class="col">
-                        <center>
-                            <h2><?php echo $nro_espacio; ?></h2>
-                            <button class="btn btn-info">
-                                <img src="<?php echo $URL; ?>/public/imagenes/auto1.png" width="60px" alt="">
-                            </button>
+    
+    <div class="row" id="mapa-estacionamiento">
+        <?php
+        $query_mapeos = $pdo->prepare("SELECT * FROM tb_mapeos WHERE estado = '1' ");
+        $query_mapeos->execute();
+        $mapeos = $query_mapeos->fetchAll(PDO::FETCH_ASSOC);
+        foreach ($mapeos as $mapeo) {
+            $id_map = $mapeo['id_map'];
+            $nro_espacio = $mapeo['nro_espacio'];
+            $estado_espacio = $mapeo['estado_espacio'];
+            if ($estado_espacio == 'LIBRE') { ?>
+                <div class="col mb-2">
+                    <center>
+                        <h2><?php echo $nro_espacio; ?></h2>
+                        <button class="btn btn-success" style="width: 100%; height: 114px">
                             <p><?php echo $estado_espacio; ?></p>
-                        </center>
-                    </div>
-                <?php
-                }
-                ?>
-
+                        </button>
+                    </center>
+                </div>
+            <?php
+            }
+            if ($estado_espacio == 'OCUPADO') { ?>
+                <div class="col mb-2">
+                    <center>
+                        <h2><?php echo $nro_espacio; ?></h2>
+                        <button class="btn btn-info">
+                            <img src="<?php echo $URL; ?>/public/imagenes/auto1.png" width="60px" alt="">
+                        </button>
+                        <p><?php echo $estado_espacio; ?></p>
+                    </center>
+                </div>
             <?php
             }
             ?>
+
+        <?php
+        }
+        ?>
+    </div>
+    
+    <div id="info-sobre-nosotros" class="info-section" style="display: none;">
+        <div class="card shadow-sm" style="background-color: #ffffff90;">
+            <div class="card-header">
+                <h3>Sobre Nosotros</h3>
+            </div>
+            <div class="card-body">
+                <p>¡Aquí puedes escribir todo sobre tu negocio!</p>
+                <p>Somos el Estacionamiento Huascar, dedicados a...</p>
+            </div>
         </div>
     </div>
+
+    <div id="info-otros-servicios" class="info-section" style="display: none;">
+        <div class="card shadow-sm" style="background-color: #ffffff90;">
+            <div class="card-header">
+                <h3>Mas que un Mercado</h3>
+            </div>
+            <div class="card-body">
+                <p>Poner sobre el alquiler del local, alquiler de puestos</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="info-contactanos" class="info-section" style="display: none;">
+        <div class="card shadow-sm" style="background-color: #ffffff90;">
+            <div class="card-header">
+                <h3>Contáctanos</h3>
+            </div>
+            <div class="card-body">
+                <p><b>Dirección:</b> Calle Falsa 123, Mercado Huascar</p>
+                <p><b>Teléfono:</b> +51 987 654 321</p>
+            </div>
+        </div>
+    </div>
+    
+</div>
 
     <!--Optional JavaScript-->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
@@ -153,6 +180,8 @@
 
 <script>
     $(document).ready(function() {
+        
+        // --- LÓGICA DE LOGIN (Tu código original) ---
         $('#btn_ingresar').click(function() {
             login();
         });
@@ -183,5 +212,44 @@
                 });
             }
         }
+        
+        // --- NUEVA LÓGICA PARA MOSTRAR/OCULTAR SECCIONES ---
+        
+        // Función para ocultar todo
+        function ocultarTodo() {
+            $('#mapa-estacionamiento').hide();
+            $('.info-section').hide(); // Oculta todas las secciones de info
+        }
+
+        // Botón INICIO
+        $('#btn-inicio').click(function(e) {
+            e.preventDefault(); // Evita que la página recargue
+            ocultarTodo();
+            $('#mapa-estacionamiento').fadeIn(); // Muestra el mapa
+        });
+
+        // Botón SOBRE NOSOTROS
+        $('#btn-sobre-nosotros').click(function(e) {
+            e.preventDefault();
+            ocultarTodo();
+            $('#info-sobre-nosotros').fadeIn(); // Muestra la sección
+        });
+
+        // Botón SOBRE OTROS SERVICIOS
+        $('#btn-otros-servicios').click(function(e) {
+            e.preventDefault();
+            ocultarTodo();
+            $('#info-otros-servicios').fadeIn(); // Muestra la sección
+        });
+        
+        // Botón CONTACTANOS
+        $('#btn-contactanos').click(function(e) {
+            e.preventDefault();
+            ocultarTodo();
+            $('#info-contactanos').fadeIn(); // Muestra la sección
+        });
+        
+
     });
 </script>
+

@@ -95,6 +95,7 @@ include('../layout/admin/datos_usuario_sesion.php');
         </div>
 
     </div>
+
     <!-- /.content-wrapper -->
     <?php include('../layout/admin/footer.php'); ?>
 </div>

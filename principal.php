@@ -31,7 +31,7 @@ $contador_del_nro_de_factura = $contador_del_nro_de_factura + 1;
       <br>
       <div class="container">
 
-        <h2>Bienvenido al SISTEMA DE PARQUEO - MERCADO HUASCAR</h2>
+        <h2>Bienvenido al ESTACIONAMIENTO - MERCADO HUASCAR</h2>
 
         <br>
         <div class="row">
@@ -39,7 +39,7 @@ $contador_del_nro_de_factura = $contador_del_nro_de_factura + 1;
 
             <div class="card card-outline card-primary">
               <div class="card-header">
-                <h3 class="card-title">Mapeo actual del parqueo de usuario</h3>
+                <h3 class="card-title">Mapeo actual del parqueo</h3>
                 <div class="card-tools">
                   <button type="button" class="btn btn-tool" data-card-widget="collapse">
                     <i class="fas fa-minus"></i>
@@ -270,7 +270,7 @@ $contador_del_nro_de_factura = $contador_del_nro_de_factura + 1;
                                   </div>
 
                                   <div class="form-group row">
-                                    <label for="staticEmail" class="col-sm-4 col-form-label">NIT/CI: </label>
+                                    <label for="staticEmail" class="col-sm-4 col-form-label">DNI/RUC: </label>
                                     <div class="col-sm-8">
                                       <input type="text" class="form-control" value="<?php echo $nit_ci; ?>" id="nit_ci<?php echo $id_map; ?>" disabled>
                                     </div>
