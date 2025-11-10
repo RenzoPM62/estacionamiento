@@ -26,11 +26,14 @@ include('../layout/admin/datos_usuario_sesion.php');
                             <div class="card-header">
                                 <h3 class="card-title">Clientes registrados</h3>
                                 <div class="card-tools">
+
+                                    <a href="generar-reporte.php" target="_blank" class="btn btn-primary btn-sm" style="margin-right: 5px;">
+                                        <i class="fas fa-print"></i> Generar Reporte
+                                    </a>
                                     <button type="button" class="btn btn-tool" data-card-widget="collapse">
                                         <i class="fas fa-minus"></i>
                                     </button>
                                 </div>
-
                             </div>
 
                             <div class="card-body" style="display: block;">

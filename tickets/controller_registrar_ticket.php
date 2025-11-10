@@ -11,6 +11,8 @@ $fecha_ingreso = $_GET['fecha_ingreso'];
 $hora_ingreso = $_GET['hora_ingreso'];
 $user_sesion = $_GET['user_session'];
 $estado_ticket = "OCUPADO";
+// Se inicializa la variable de estado que faltaba
+$estado_del_registro = "1"; 
 
 date_default_timezone_set("America/Lima");
 $fechaHora = date("Y-m-d h:i:s");
@@ -31,10 +33,20 @@ $sentencia->bindParam(':fyh_creacion',$fechaHora);
 $sentencia->bindParam(':estado',$estado_del_registro);
 
 if($sentencia->execute()) {
+    // Obtener el ID del último registro para enviarlo a la página de impresión
+    $id_ticket = $pdo->lastInsertId();
+
     echo 'Ticket registrado';
     ?>
-        <script>location.href = "tickets/generar_ticket.php";</script>
+        <script>
+            // 1. Abre la página de generación del ticket en una NUEVA PESTAÑA (_blank)
+            window.open('tickets/generar_ticket.php?id_ticket=<?php echo $id_ticket; ?>', '_blank');
+
+            // 2. Redirige la PESTAÑA ACTUAL al mapeo de vehículos
+            location.href = "principal.php";
+        </script>
     <?php
 }else{
     echo 'Error al registrar a la base de datos';
 }
+// Se eliminó la llave de cierre adicional que causaba un error de sintaxis en PHP.

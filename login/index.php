@@ -4,7 +4,7 @@ include('../app/config.php');
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8">1
+    <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>AdminLTE 3 | Log in</title>
     <!-- Tell the browser to be responsive to screen width -->
@@ -24,11 +24,13 @@ include('../app/config.php');
 <body class="hold-transition login-page">
 
 <center>
-    <img src="<?php echo $URL;?>/public/imagenes/auto1.png" width="100px" alt=""> <br><br>
+    <img src="<?php echo $URL;?>/public/imagenes/mercado_huascar.png" style="width:300px; height:auto;" alt="">
+</center>
+
 </center>
 <div class="login-box">
     <div class="login-logo">
-        <a href=""><b>SISTEMA DE</b> PARQUEO</a>
+        <a href=""><b>ESTACIONAMIENTO</b> MERCADO HUASCAR</a>
     </div>
     <!-- /.login-logo -->
     <div class="card">

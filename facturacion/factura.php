@@ -116,7 +116,7 @@ $html = '
         '.$actividad_empresa.' <br>
         SUCURSAL No '.$sucursal.' <br>
         '.$direccion.' <br>
-        ZONA: '.$zona.' <br>
+        '.$zona.' <br>
         TELÉFONO: '.$telefono.' <br>
         '.$departamento_ciudad.' - '.$pais.' <br>
         --------------------------------------------------------------------------------
@@ -126,7 +126,7 @@ $html = '
            
             <b>DATOS DEL CLIENTE</b> <br>
             <b>SEÑOR(A): </b> '.$nombre_cliente.' <br>
-            <b>NIT/CI.: </b> '.$nit_ci_cliente.'  <br>
+            <b>DNI/RUC: </b> '.$nit_ci_cliente.'  <br>
             <b>Fecha de la factura: </b> '.$fecha_factura.' <br>
             -------------------------------------------------------------------------------- <br>
         <b>De: </b> '.$fecha_ingreso.'<b> Hora: </b>'.$hora_ingreso.'<br>
@@ -142,13 +142,13 @@ $html = '
          </tr>
          <tr>
             <td>'.$detalle.'</td>
-            <td style="text-align: center">Bs. '.$precio.'</td>
+            <td style="text-align: center"> S/ '.$precio.'</td>
             <td style="text-align: center">'.$cantidad.'</td>
-            <td style="text-align: center">Bs. '.$total.'</td>
+            <td style="text-align: center"> S/ '.$total.'</td>
          </tr>
          </table>
          <p style="text-align: right">
-         <b>Monto Total: </b> Bs. '.$monto_total.'
+         <b>Monto Total: </b> S/ '.$monto_total.'
         </p>
         <p>
             <b>Son: </b>'.$monto_literal.'
@@ -156,10 +156,9 @@ $html = '
         <br>
          -------------------------------------------------------------------------------- <br>
          <b>USUARIO:</b> '.$user_sesion.' <br><br><br><br><br><br><br><br>
+         <br><br><br>
          
         <p style="text-align: center">
-        </p>
-        <p style="text-align: center">"ESTA FACTURA CONTRIBUYE AL DESARROLLO DEL PAÍS, EL USO ILÍCITO DE ÉSTA SERÁ SANCIONADO DE ACUERDO A LA LEY"
         </p>
         <p style="text-align: center"><b>GRACIAS POR SU PREFERENCIA</b></p>
         
