@@ -1,7 +1,7 @@
 
 
 CREATE TABLE tb_tickets(
-    id_ticket               INT (11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    id_ticket               INT (11) NOT NULL,
     nombre_cliente          VARCHAR (255) NULL,
     nit_ci                  VARCHAR (255) NULL,
     placa_auto             VARCHAR (255) NULL,
