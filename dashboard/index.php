@@ -2,87 +2,14 @@
 include('../app/config.php');
 include('../layout/admin/datos_usuario_sesion.php');
 
+// Incluir el controlador que tiene toda la lógica y los datos
+include('controller_dashboard.php');
+
 // Redirigir si el usuario no tiene permisos
 if ($rol_sesion != "ADMINISTRADOR" && $rol_sesion != "CONTADOR") {
     header('Location: ' . $URL . '/');
     exit();
 }
-
-
-// =================================================================
-// CONSULTAS A LA BASE DE DATOS PARA LOS KPIs
-// =================================================================
-
-// 1. Ingresos de Hoy (Suma de monto_total de facturas de hoy)
-$query_ingresos_hoy = $pdo->prepare("SELECT SUM(monto_total) AS ingresos_hoy FROM tb_facturaciones WHERE DATE(fyh_creacion) = CURDATE()");
-$query_ingresos_hoy->execute();
-$datos_ingresos_hoy = $query_ingresos_hoy->fetch(PDO::FETCH_ASSOC);
-$ingresos_hoy = $datos_ingresos_hoy['ingresos_hoy'] ?? 0;
-
-// 2. Tickets de Hoy (Conteo de tickets creados hoy)
-$query_tickets_hoy = $pdo->prepare("SELECT COUNT(id_ticket) AS tickets_hoy FROM tb_tickets WHERE DATE(fyh_creacion) = CURDATE()");
-$query_tickets_hoy->execute();
-$datos_tickets_hoy = $query_tickets_hoy->fetch(PDO::FETCH_ASSOC);
-$tickets_hoy = $datos_tickets_hoy['tickets_hoy'] ?? 0;
-
-// 3. Clientes Nuevos de Hoy (Conteo de clientes creados hoy)
-$query_clientes_hoy = $pdo->prepare("SELECT COUNT(id_cliente) AS clientes_hoy FROM tb_clientes WHERE DATE(fyh_creacion) = CURDATE() AND estado = '1'");
-$query_clientes_hoy->execute();
-$datos_clientes_hoy = $query_clientes_hoy->fetch(PDO::FETCH_ASSOC);
-$clientes_hoy = $datos_clientes_hoy['clientes_hoy'] ?? 0;
-
-// 4. Espacios Libres (Conteo de espacios libres)
-$query_espacios_libres = $pdo->prepare("SELECT COUNT(id_map) AS espacios_libres FROM tb_mapeos WHERE estado_espacio = 'LIBRE' AND estado = '1'");
-$query_espacios_libres->execute();
-$datos_espacios_libres = $query_espacios_libres->fetch(PDO::FETCH_ASSOC);
-$espacios_libres = $datos_espacios_libres['espacios_libres'] ?? 0;
-
-
-// =================================================================
-// CONSULTAS PARA LOS GRÁFICOS
-// =================================================================
-
-// 1. Gráfico de Ingresos por Mes (Año Actual)
-$meses = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
-$ingresos_por_mes = array_fill(0, 12, 0); // Inicializar array con 12 ceros
-
-$query_ingresos_mes = $pdo->prepare("
-    SELECT MONTH(fyh_creacion) AS mes, SUM(monto_total) AS total_mes 
-    FROM tb_facturaciones 
-    WHERE YEAR(fyh_creacion) = YEAR(CURDATE()) 
-    GROUP BY MONTH(fyh_creacion)");
-$query_ingresos_mes->execute();
-$datos_ingresos_mes = $query_ingresos_mes->fetchAll(PDO::FETCH_ASSOC);
-
-foreach ($datos_ingresos_mes as $dato) {
-    $ingresos_por_mes[$dato['mes'] - 1] = $dato['total_mes']; // -1 porque los meses del array empiezan en 0
-}
-$json_ingresos_mes = json_encode($ingresos_por_mes);
-$json_meses = json_encode($meses);
-
-
-// 2. Gráfico de Afluencia por Hora (Promedio Histórico)
-$afluencia_por_hora = array_fill(0, 24, 0); // Array de 24 horas (0-23)
-$labels_horas = [];
-for ($i = 0; $i < 24; $i++) {
-    $labels_horas[] = $i . ':00';
-} // Labels para el eje X (0:00, 1:00, etc.)
-
-// Usamos la columna hora_ingreso que es VARCHAR, por eso usamos HOUR()
-$query_afluencia = $pdo->prepare("
-    SELECT HOUR(hora_ingreso) AS hora, COUNT(id_ticket) AS cantidad 
-    FROM tb_tickets 
-    GROUP BY HOUR(hora_ingreso)
-    ORDER BY hora ASC");
-$query_afluencia->execute();
-$datos_afluencia = $query_afluencia->fetchAll(PDO::FETCH_ASSOC);
-
-foreach ($datos_afluencia as $dato) {
-    $afluencia_por_hora[$dato['hora']] = $dato['cantidad'];
-}
-$json_afluencia_horas = json_encode($afluencia_por_hora);
-$json_labels_horas = json_encode($labels_horas);
-
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -102,8 +29,19 @@ $json_labels_horas = json_encode($labels_horas);
             <br>
             <div class="container">
 
-                <h2>Dashboard - Reportes del Negocio</h2>
-                <p>Resumen de la actividad del estacionamiento.</p>
+                <div class="row">
+                    <div class="col-md-9">
+                        <h2>Dashboard - Reportes del Negocio</h2>
+                        <p>Resumen de la actividad del estacionamiento.</p>
+                    </div>
+                    <div class="col-md-3 text-right">
+                        <a href="generar_reporte.php" target="_blank" class="btn btn-primary">
+                            <i class="fas fa-file-pdf"></i> Generar Reporte del Día
+                        </a>
+                    </div>
+                </div>
+
+                <hr>
 
                 <div class="row">
                     <div class="col-lg-3 col-6">
@@ -112,9 +50,7 @@ $json_labels_horas = json_encode($labels_horas);
                                 <h3>S/ <?php echo number_format($ingresos_hoy, 2); ?></h3>
                                 <p>Ingresos de Hoy</p>
                             </div>
-                            <div class="icon">
-                                <i class="fas fa-dollar-sign"></i>
-                            </div>
+                            <div class="icon"><i class="fas fa-dollar-sign"></i></div>
                         </div>
                     </div>
                     <div class="col-lg-3 col-6">
@@ -123,62 +59,144 @@ $json_labels_horas = json_encode($labels_horas);
                                 <h3><?php echo $tickets_hoy; ?></h3>
                                 <p>Vehículos Ingresados Hoy</p>
                             </div>
-                            <div class="icon">
-                                <i class="fas fa-ticket-alt"></i>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-6">
-                        <div class="small-box bg-warning">
-                            <div class="inner">
-                                <h3><?php echo $clientes_hoy; ?></h3>
-                                <p>Clientes Nuevos Hoy</p>
-                            </div>
-                            <div class="icon">
-                                <i class="fas fa-user-plus"></i>
-                            </div>
+                            <div class="icon"><i class="fas fa-ticket-alt"></i></div>
                         </div>
                     </div>
                     <div class="col-lg-3 col-6">
                         <div class="small-box bg-primary">
                             <div class="inner">
-                                <h3><?php echo $espacios_libres; ?></h3>
-                                <p>Espacios Libres Ahora</p>
+                                <h3><?php echo number_format($tasa_ocupacion, 1); ?> <sup style="font-size: 20px">%</sup></h3>
+                                <p>Ocupación Actual (<?php echo $total_ocupados . "/" . $total_espacios; ?>)</p>
                             </div>
-                            <div class="icon">
-                                <i class="fas fa-car"></i>
+                            <div class="icon"><i class="fas fa-car"></i></div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-6">
+                        <div class="small-box bg-secondary">
+                            <div class="inner">
+                                <h3>S/ <?php echo number_format($ingreso_promedio_vehiculo, 2); ?></h3>
+                                <p>Ingreso Promedio / Vehículo</p>
+                            </div>
+                            <div class="icon"><i class="fas fa-chart-pie"></i></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card card-outline card-primary">
+                            <div class="card-header">
+                                <h3 class="card-title">Generar Reportes Históricos (PDF)</h3>
+                            </div>
+                            <div class="card-body">
+                                <form action="generar_reporte_historico.php" method="GET" target="_blank">
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label for="tipo_reporte">Tipo de Reporte</label>
+                                                <select class="form-control" name="tipo_reporte" id="tipo_reporte" required>
+                                                    <option value="mensual">Mensual</option>
+                                                    <option value="anual">Anual</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label for="mes">Mes</label>
+                                                <select class="form-control" name="mes" id="mes">
+                                                    <?php foreach ($meses_formulario as $num => $nombre) {
+                                                        // Selecciona el mes actual por defecto
+                                                        $selected = ($num == date('m')) ? 'selected' : '';
+                                                        echo "<option value=\"$num\" $selected>$nombre</option>";
+                                                    } ?>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label for="anio">Año</label>
+                                                <select class="form-control" name="anio" id="anio" required>
+                                                    <?php
+                                                    $anio_actual = date('Y');
+                                                    $anios_en_lista = [];
+                                                    foreach ($anios_disponibles as $anio_data) {
+                                                        $anio_item = $anio_data['anio'];
+                                                        $anios_en_lista[] = $anio_item;
+                                                        // Selecciona el año actual por defecto
+                                                        $selected = ($anio_item == $anio_actual) ? 'selected' : '';
+                                                        echo "<option value=\"$anio_item\" $selected>$anio_item</option>";
+                                                    }
+                                                    // Agregar año actual si no está en la lista de reportes (por si es un año nuevo sin datos)
+                                                    if (!in_array($anio_actual, $anios_en_lista)) {
+                                                        echo "<option value=\"$anio_actual\" selected>$anio_actual</option>";
+                                                    }
+                                                    ?>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label>&nbsp;</label>
+                                                <button type="submit" class="btn btn-success btn-block"><i class="fas fa-chart-bar"></i> Generar Reporte</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                                <small class="text-muted">
+                                    * Para reportes <b>Mensuales</b>, seleccione el mes y el año.<br>
+                                    * Para reportes <b>Anuales</b>, solo seleccione el año (el mes será ignorado).
+                                </small>
                             </div>
                         </div>
                     </div>
-                    </div>
+                </div>
                 <div class="row">
-                    <div class="col-md-8">
+                    <div class="col-md-12">
+                        <div class="card card-dark">
+                            <div class="card-header">
+                                <h3 class="card-title">Actividad de los Últimos 30 Días</h3>
+                            </div>
+                            <div class="card-body">
+                                <div class="chart">
+                                    <canvas id="graficoHistorico" style="min-height: 250px; height: 300px; max-height: 350px; width: 100%;"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-5">
                         <div class="card card-primary">
                             <div class="card-header">
                                 <h3 class="card-title">Ingresos del Año Actual (S/)</h3>
                             </div>
                             <div class="card-body">
-                                <div class="chart">
-                                    <canvas id="graficoIngresos" style="min-height: 250px; height: 300px; max-height: 350px; width: 100%;"></canvas>
-                                </div>
+                                <canvas id="graficoIngresos" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
                             </div>
-                            </div>
-                    </div>
-
-                    <div class="col-md-4">
-                        <div class="card card-success">
+                        </div>
+                        
+                        <div class="card card-warning">
                             <div class="card-header">
-                                <h3 class="card-title">Afluencia por Hora (Histórico)</h3>
+                                <h3 class="card-title">Top 5 Clientes Frecuentes (por Placa)</h3>
                             </div>
                             <div class="card-body">
-                                <div class="chart">
-                                    <canvas id="graficoAfluencia" style="min-height: 250px; height: 300px; max-height: 350px; width: 100%;"></canvas>
-                                </div>
+                                <canvas id="graficoTopClientes" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
                             </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-7">
+                        <div class="card card-success">
+                            <div class="card-header">
+                                <h3 class="card-title">Afluencia por Hora (Total Histórico)</h3>
                             </div>
+                            <div class="card-body">
+                                <canvas id="graficoAfluencia" style="min-height: 565px; height: 565px; max-height: 565px; max-width: 100%;"></canvas>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                </div>
+
+            </div>
         </div>
         <?php include('../layout/admin/footer.php'); ?>
 
@@ -187,64 +205,57 @@ $json_labels_horas = json_encode($labels_horas);
 
     <script>
         $(function() {
-            /* --- Gráfico de Ingresos (Líneas) --- */
+            /* --- Gráfico 1: Ingresos (Líneas) --- */
             var ctxIngresos = document.getElementById('graficoIngresos').getContext('2d');
-            var dataIngresos = {
-                labels: <?php echo $json_meses; ?>,
-                datasets: [{
-                    label: 'Ingresos (S/)',
-                    backgroundColor: 'rgba(60,141,188,0.2)', // Azul
-                    borderColor: 'rgba(60,141,188,1)',
-                    pointRadius: 5,
-                    pointColor: '#3b8bba',
-                    pointStrokeColor: 'rgba(60,141,188,1)',
-                    pointHighlightFill: '#fff',
-                    pointHighlightStroke: 'rgba(60,141,188,1)',
-                    data: <?php echo $json_ingresos_mes; ?>,
-                    fill: true, // Rellenar área bajo la línea
-                }]
-            };
-
             new Chart(ctxIngresos, {
                 type: 'line',
-                data: dataIngresos,
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                        yAxes: [{
-                            ticks: {
-                                beginAtZero: true,
-                                // Formatear como moneda
-                                callback: function(value, index, values) {
-                                    return 'S/ ' + value;
-                                }
-                            }
-                        }]
-                    }
-                }
+                data: {
+                    labels: <?php echo $json_meses; ?>,
+                    datasets: [{
+                        label: 'Ingresos (S/)',
+                        backgroundColor: 'rgba(60,141,188,0.2)',
+                        borderColor: 'rgba(60,141,188,1)',
+                        data: <?php echo $json_ingresos_mes; ?>,
+                        fill: true,
+                    }]
+                },
+                options: { responsive: true, maintainAspectRatio: false }
             });
 
-            /* --- Gráfico de Afluencia (Barras) --- */
+            /* --- Gráfico 2: Afluencia (Barras) --- */
             var ctxAfluencia = document.getElementById('graficoAfluencia').getContext('2d');
-            var dataAfluencia = {
-                labels: <?php echo $json_labels_horas; ?>,
-                datasets: [{
-                    label: 'Nro. de Tickets',
-                    backgroundColor: 'rgba(0,166,90,0.9)', // Verde
-                    borderColor: 'rgba(0,166,90,0.8)',
-                    data: <?php echo $json_afluencia_horas; ?>,
-                }]
-            };
-
             new Chart(ctxAfluencia, {
                 type: 'bar',
-                data: dataAfluencia,
+                data: {
+                    labels: <?php echo $json_labels_horas; ?>,
+                    datasets: [{
+                        label: 'Nro. de Tickets',
+                        backgroundColor: 'rgba(0,166,90,0.9)',
+                        borderColor: 'rgba(0,166,90,0.8)',
+                        data: <?php echo $json_afluencia_horas; ?>,
+                    }]
+                },
+                options: { responsive: true, maintainAspectRatio: false }
+            });
+
+            /* --- Gráfico 3: Top Clientes (Barras Horizontales) (¡Nuevo!) --- */
+            var ctxTopClientes = document.getElementById('graficoTopClientes').getContext('2d');
+            new Chart(ctxTopClientes, {
+                type: 'horizontalBar', // Gráfico de barras horizontales
+                data: {
+                    labels: <?php echo $json_labels_top_clientes; ?>,
+                    datasets: [{
+                        label: 'Nro. de Visitas',
+                        backgroundColor: 'rgba(243, 156, 18, 0.9)', // Naranja
+                        borderColor: 'rgba(243, 156, 18, 0.8)',
+                        data: <?php echo $json_data_top_clientes; ?>,
+                    }]
+                },
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
                     scales: {
-                        yAxes: [{
+                        xAxes: [{
                             ticks: {
                                 beginAtZero: true,
                                 stepSize: 1 // Asegura que solo muestre enteros
@@ -253,8 +264,78 @@ $json_labels_horas = json_encode($labels_horas);
                     }
                 }
             });
+
+            /* --- Gráfico 4: Histórico (Líneas Múltiples) (¡Nuevo!) --- */
+            var ctxHistorico = document.getElementById('graficoHistorico').getContext('2d');
+            new Chart(ctxHistorico, {
+                type: 'line',
+                data: {
+                    labels: <?php echo $json_labels_historico; ?>,
+                    datasets: [
+                        {
+                            label: 'Ingresos (S/)',
+                            backgroundColor: 'rgba(60,141,188,0.2)',
+                            borderColor: 'rgba(60,141,188,1)',
+                            data: <?php echo $json_data_historico_ingresos; ?>,
+                            fill: true,
+                            yAxisID: 'y-axis-ingresos' // Asignar al eje Y izquierdo
+                        },
+                        {
+                            label: 'Clientes Nuevos',
+                            backgroundColor: 'rgba(0,166,90,0.2)',
+                            borderColor: 'rgba(0,166,90,1)',
+                            data: <?php echo $json_data_historico_clientes; ?>,
+                            fill: true,
+                            yAxisID: 'y-axis-clientes' // Asignar al eje Y derecho
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        yAxes: [
+                            {
+                                id: 'y-axis-ingresos',
+                                type: 'linear',
+                                position: 'left',
+                                ticks: {
+                                    beginAtZero: true,
+                                    callback: function(value) { return 'S/ ' + value; }
+                                }
+                            },
+                            {
+                                id: 'y-axis-clientes',
+                                type: 'linear',
+                                position: 'right',
+                                ticks: {
+                                    beginAtZero: true,
+                                    stepSize: 1 // Solo enteros
+                                },
+                                gridLines: {
+                                    drawOnChartArea: false, // No mostrar cuadrícula para este eje
+                                }
+                            }
+                        ]
+                    }
+                }
+            });
+
+            
+            /* --- Lógica para el formulario de reportes (¡Nuevo!) --- */
+            $('#tipo_reporte').on('change', function() {
+                if ($(this).val() === 'anual') {
+                    $('#mes').prop('disabled', true);
+                } else {
+                    $('#mes').prop('disabled', false);
+                }
+            });
+            // Ejecutar al cargar para setear estado inicial
+            if ($('#tipo_reporte').val() === 'anual') {
+                 $('#mes').prop('disabled', true);
+            }
+
         });
     </script>
 </body>
-
 </html>
