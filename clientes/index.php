@@ -41,7 +41,7 @@ include('../layout/admin/datos_usuario_sesion.php');
                                 <table class="table table-bordered table-sm table-striped">
                                     <th><center>Nro</center></th>
                                     <th>Nombre del cliente</th>
-                                    <th>NIT/CI del cliente</th>
+                                    <th>DNI/RUC del cliente</th>
                                     <th>Placa del auto</th>
                                     <th><center>Acción</center></th>
 

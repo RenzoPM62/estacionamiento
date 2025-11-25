@@ -155,8 +155,7 @@ $html = '
         </p>
         <br>
          -------------------------------------------------------------------------------- <br>
-         <b>USUARIO:</b> '.$user_sesion.' <br><br><br><br><br><br><br><br>
-         <br><br><br>
+         <b>USUARIO:</b> '.$user_sesion.' <br><br><br><br><br><br><br><br><br><br><br>
          
         <p style="text-align: center">
         </p>
@@ -176,15 +175,15 @@ $pdf->writeHTML($html, true, false, true, false, '');
 
 $style = array(
     'border' => 0,
-    'vpadding' => '3',
-    'hpadding' => '3',
+    'vpadding' => '2',
+    'hpadding' => '2',
     'fgcolor' => array(0, 0, 0),
     'bgcolor' => false, //array(255,255,255)
     'module_width' => 1, // width of a single module in points
     'module_height' => 1 // height of a single module in points
 );
 
-$pdf->write2DBarcode($qr,'QRCODE,L',  22,109,30,30, $style);
+$pdf->write2DBarcode($qr,'QRCODE,L',  24,115,30,30, $style);
 
 
 
